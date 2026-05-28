@@ -50,6 +50,10 @@ elecGridData <- arc_select(layer)
 va_lines <- elecGridData %>% st_transform(crs = 4326) %>% st_filter(st_as_sfc(st_bbox(va_water)))
 ```
 
+```{r}
+#data_centers <- read.csv('')
+```
+
 
 ```{r}
 # exploratory leaflet map with electric grid and bodies of water

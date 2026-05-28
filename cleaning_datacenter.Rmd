@@ -1,0 +1,47 @@
+---
+title: "cleaning_datacenters"
+author: "Ziad Bushnaq"
+date: "2026-05-28"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+# This is the setup chunk
+#  Here you can set global options for the entire document
+
+library(knitr) # I recommend doing this here
+library(tidyverse)
+library(sf)
+library(leaflet)
+library(ggplot2)
+library(tigris)
+library(arcgislayers)
+library(tidycensus)
+
+options(tigris_use_cache = TRUE)
+
+# Although you can call functions from a library using the following notation
+#  without loading the entire library.
+knitr::opts_chunk$set(echo = TRUE, 
+                      tidy = TRUE,
+                      tidy.opts = list(width.cutoff = 60),
+                      comment = NA, # Required
+                      fig.path = "./figures/",  # Store all figures here in relative path (make the folder first)
+                      fig.align = "center",
+                      fig.width = 7,
+                      fig.height = 7,
+                      message = FALSE, # Turn off load messages
+                      warning = FALSE # Turn off warnings
+                      )
+```
+
+```{r}
+raw_dat <- read.csv('data/raw_datacenter.csv')
+summary(raw_dat)
+```
+```{r}
+kable(colSums(is.na(raw_dat)))
+head(raw_dat)
+```
+
+Looks like most problematic NA's will be the coordinates, could potentially address this using tidycensus to take address and turn into coordinates for easier mapping.
