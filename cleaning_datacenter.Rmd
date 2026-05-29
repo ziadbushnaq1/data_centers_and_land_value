@@ -44,4 +44,12 @@ kable(colSums(is.na(raw_dat)))
 head(raw_dat)
 ```
 
-Looks like most problematic NA's will be the coordinates, could potentially address this using tidycensus to take address and turn into coordinates for easier mapping.
+Looks like most problematic NA's will be the coordinates, could potentially address this using tidycensus to take address and turn into coordinates for easier mapping. 
+
+```{r}
+# NA values in coordinate columns removed 
+# ***TODO*** could probably add coordinates to these rows based on address
+clean01_datacenters <- raw_dat %>% drop_na(latitude, longitude)
+write.csv(clean01_datacenters, "data/clean01_datacenter.csv", row.names = FALSE)
+```
+

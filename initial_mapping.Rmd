@@ -36,7 +36,7 @@ knitr::opts_chunk$set(echo = TRUE,
 
 ```{r}
 # stores tiger shapefile for VA in 2025
-va_counties <- counties(state = '51', year = 2025)
+va_counties <- counties(state = "51", year = 2025)
 # loops and collects bodies of water for every county
 va_water_list <- purrr::map(va_counties$COUNTYFP, ~ {area_water(state = "51", county = .x, year = 2025)})
 # binds everything together and changes coordinate system
@@ -51,12 +51,12 @@ va_lines <- elecGridData %>% st_transform(crs = 4326) %>% st_filter(st_as_sfc(st
 ```
 
 ```{r}
-#data_centers <- read.csv('')
+data_centers <- read.csv("data/clean01_datacenter.csv")
 ```
-
 
 ```{r}
 # exploratory leaflet map with electric grid and bodies of water
+
 leaflet() %>%
   addProviderTiles(providers$CartoDB.Positron, group = "Base Map") %>%
   # bodies of water
@@ -64,9 +64,12 @@ leaflet() %>%
               
   # electric lines
   addPolylines(data = va_lines, color = "#d62728", weight = 2, opacity = 0.8, group = "Transmission Lines") %>%
+  
+  # data centers (top layer)
+  addCircleMarkers(data = data_centers, color = "black", weight = 1, radius = 3, fillOpacity = 1, options = markerOptions(zIndexOffset = 10), group = "Data Centers") %>%
 
   # layer controls
-  addLayersControl(overlayGroups = c("Area Water", "Transmission Lines"), options = layersControlOptions(collapsed = FALSE))
+  addLayersControl(overlayGroups = c("Area Water", "Transmission Lines", "Data Centers"), options = layersControlOptions(collapsed = FALSE))
 
 ```
 
