@@ -57,8 +57,8 @@ data_centers <- read.csv("data/clean01_datacenter.csv") %>% st_as_sf(coords = c(
 ```
 
 ```{r}
-# reads in large land parcel shapefile 
-land <- st_read("data/final_shapes/final_shapes.shp")
+# reads in large land parcel shapefile, changes coordinate system
+land <- st_read("data/final_shapes/final_shapes.shp") %>% st_transform(crs = 4326)
 ```
 
 
@@ -74,11 +74,11 @@ leaflet() %>%
   # electric lines
   addPolylines(data = va_lines, color = "red", weight = 2, opacity = 0.8, group = "Transmission Lines") %>%
   
-  # data centers (top layer), zIndexOffset in options is set to a high value to have this layer appear above the other layers
-  addCircleMarkers(data = data_centers, color = "black", weight = 1, radius = 3, fillOpacity = 1, options = markerOptions(zIndexOffset = 10), group = "Data Centers") %>%
-  
   # large land parcels 
   addPolygons(data = land, color = "forestgreen", weight = 1, fillOpacity = 1, group = "Large Land Parcels") %>%
+  
+  # data centers (top layer)
+  addCircleMarkers(data = data_centers, color = "black", weight = 1, radius = 3, fillOpacity = 1, group = "Data Centers") %>%
 
   # layer controls
   addLayersControl(overlayGroups = c("Area Water", "Transmission Lines", "Data Centers", "Large Land Parcels"), options = layersControlOptions(collapsed = FALSE))
